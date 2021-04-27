@@ -62,4 +62,60 @@ const all = async (req, res, next) => {
     }
 };
 
-module.exports = { create, all };
+const one = async (req, res, next) => {
+    try {
+        const records = await Record.findAll({
+            where: {
+                record_id: req.params.record_id,
+                user_id: req.user_details.data.id,
+            },
+        });
+
+        if (records.length) {
+            return handleSuccessResponse({
+                res,
+                message: "Record found",
+                status_code: status.OK,
+                body: { data: records },
+            });
+        } else {
+            return handleSuccessResponse({
+                res,
+                message: "Record not found",
+                status_code: status.OK,
+                body: { data: [] },
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const deleteRecord = async (req, res, next) => {
+    try {
+        const record = await Record.destroy({
+            where: {
+                record_id: req.params.record_id,
+                user_id: req.user_details.data.id,
+            },
+        });
+
+        if (record) {
+            return handleSuccessResponse({
+                res,
+                message: "Record deleted successfully",
+                status_code: status.OK,
+            });
+        } else {
+            return handleSuccessResponse({
+                res,
+                message: "Record not found. Unable to delete record",
+                status_code: status.OK,
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { create, all, one, deleteRecord };

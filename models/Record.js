@@ -53,6 +53,9 @@ const Record = sequelize.define(
             type: DataTypes.NUMBER,
             allowNull: false,
         },
+        created_at: {
+            type: DataTypes.DATE,
+        },
     },
     {
         tableName: "record",

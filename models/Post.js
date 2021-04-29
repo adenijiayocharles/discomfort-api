@@ -1,19 +1,24 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../connection/db");
 
-const User = sequelize.define(
-    "User",
+const Post = sequelize.define(
+    "Post",
     {
-        name: {
+        post_id: { type: DataTypes.NUMBER, primaryKey: true },
+        category: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        password: {
+        body: {
             type: DataTypes.STRING,
+            allowNull: false,
+        },
+        user_id: {
+            type: DataTypes.NUMBER,
             allowNull: false,
         },
         created_at: {
@@ -21,9 +26,9 @@ const User = sequelize.define(
         },
     },
     {
-        tableName: "user",
+        tableName: "posts",
         timestamps: false,
     }
 );
 
-module.exports = User;
+module.exports = Post;

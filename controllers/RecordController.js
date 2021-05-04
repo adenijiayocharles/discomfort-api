@@ -1,5 +1,7 @@
 "use strict";
 const status = require("http-status");
+// const sequelize = require("../connection/db");
+const sequelize = require("sequelize");
 const {
     handleErrorResponse,
     handleSuccessResponse,
@@ -41,7 +43,6 @@ const all = async (req, res, next) => {
                 user_id: req.user_details.data.id,
             },
         });
-
         if (records.length) {
             return handleSuccessResponse({
                 res,
@@ -118,4 +119,36 @@ const deleteRecord = async (req, res, next) => {
     }
 };
 
-module.exports = { create, all, one, deleteRecord };
+const graphData = async (req, res, next) => {
+    try {
+        const records = await Record.findAll({
+            where: {
+                user_id: req.user_details.data.id,
+            },
+            attributes: [
+                [sequelize.literal(`DATE(created_at)`), "date"],
+                [sequelize.fn("avg", sequelize.col("level")), "scale"],
+            ],
+            group: [sequelize.literal(`DATE(created_at)`)],
+            raw: true,
+        });
+        if (records.length) {
+            return handleSuccessResponse({
+                res,
+                message: "Records found",
+                status_code: status.OK,
+                body: { data: records },
+            });
+        } else {
+            return handleSuccessResponse({
+                res,
+                message: "Records not found",
+                status_code: status.OK,
+                body: { data: [] },
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+module.exports = { create, all, one, deleteRecord, graphData };

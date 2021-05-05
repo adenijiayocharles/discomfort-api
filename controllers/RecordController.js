@@ -127,24 +127,24 @@ const graphData = async (req, res, next) => {
             },
             attributes: [
                 [sequelize.literal(`DATE(created_at)`), "x"],
-                [
-                    sequelize.cast(
-                        sequelize.fn("avg", sequelize.col("level")),
-                        "int"
-                    ),
-                    "y",
-                ],
+                [sequelize.fn("avg", sequelize.col("level")), "y"],
             ],
             group: [sequelize.literal(`DATE(created_at)`)],
             order: [[sequelize.literal(`DATE(created_at)`), "ASC"]],
             raw: true,
         });
         if (records.length) {
+            let a = records.map((record) => {
+                return {
+                    x: record.x,
+                    y: Math.floor(record.y),
+                };
+            });
             return handleSuccessResponse({
                 res,
                 message: "Records found",
                 status_code: status.OK,
-                body: { data: records },
+                body: { data: a },
             });
         } else {
             return handleSuccessResponse({

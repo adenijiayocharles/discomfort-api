@@ -130,6 +130,7 @@ const graphData = async (req, res, next) => {
                 [sequelize.fn("avg", sequelize.col("level")), "y"],
             ],
             group: [sequelize.literal(`DATE(created_at)`)],
+            order: ['created_at', 'ASC'],
             raw: true,
         });
         if (records.length) {

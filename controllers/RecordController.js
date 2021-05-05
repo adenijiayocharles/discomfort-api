@@ -126,8 +126,8 @@ const graphData = async (req, res, next) => {
                 user_id: req.user_details.data.id,
             },
             attributes: [
-                [sequelize.literal(`DATE(created_at)`), "date"],
-                [sequelize.fn("avg", sequelize.col("level")), "scale"],
+                [sequelize.literal(`DATE(created_at)`), "x"],
+                [sequelize.fn("avg", sequelize.col("level")), "y"],
             ],
             group: [sequelize.literal(`DATE(created_at)`)],
             raw: true,

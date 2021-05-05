@@ -127,12 +127,16 @@ const graphData = async (req, res, next) => {
             },
             attributes: [
                 [sequelize.literal(`DATE(created_at)`), "x"],
-                [sequelize.fn("avg", sequelize.col("level")), "y"],
+                [
+                    sequelize.cast(
+                        sequelize.fn("avg", sequelize.col("level")),
+                        "int"
+                    ),
+                    "y",
+                ],
             ],
             group: [sequelize.literal(`DATE(created_at)`)],
-            order: [
-                [sequelize.literal(`DATE(created_at)`), "ASC"]
-            ],
+            order: [[sequelize.literal(`DATE(created_at)`), "ASC"]],
             raw: true,
         });
         if (records.length) {

@@ -4,7 +4,7 @@ const {
     handleErrorResponse,
     handleSuccessResponse,
 } = require("../utilities/response");
-
+const sequelize = require("sequelize");
 const Post = require("../models/Post");
 
 const create = async (req, res, next) => {
@@ -32,6 +32,7 @@ const all = async (req, res, next) => {
             where: {
                 user_id: req.user_details.data.id,
             },
+            order: [["post_id", "DESC"]],
         });
 
         if (posts.length) {

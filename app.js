@@ -11,10 +11,12 @@ app.use(express.urlencoded({ extended: false }));
 const accountRouter = require("./routes/account");
 const recordRouter = require("./routes/painlog");
 const postRouter = require("./routes/post");
+const messageRouter = require("./routes/message");
 
 app.use("/account", accountRouter);
 app.use("/record", recordRouter);
 app.use("/post", postRouter);
+app.use("/message", messageRouter);
 
 //error handling
 app.use((error, req, res, next) => {

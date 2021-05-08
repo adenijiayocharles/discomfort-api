@@ -8,6 +8,9 @@ const {
 const { generateToken } = require("../utilities/tokenizer");
 
 const User = require("../models/User");
+const Message = require("../models/Message");
+const Record = require("../models/Record");
+const Post = require("../models/Post");
 
 const register = async (req, res, next) => {
     try {
@@ -80,4 +83,45 @@ const login = async (req, res, next) => {
     }
 };
 
-module.exports = { register, login };
+const deleteUser = async (req, res, next) => {
+    try {
+        await Message.destroy({
+            where: {
+                user_id: req.user_details.data.id,
+            },
+        });
+        await Post.destroy({
+            where: {
+                user_id: req.user_details.data.id,
+            },
+        });
+        await Record.destroy({
+            where: {
+                user_id: req.user_details.data.id,
+            },
+        });
+        const record = await User.destroy({
+            where: {
+                id: req.user_details.data.id,
+            },
+        });
+
+        if (record) {
+            return handleSuccessResponse({
+                res,
+                message: "User deleted successfully",
+                status_code: status.OK,
+            });
+        } else {
+            return handleSuccessResponse({
+                res,
+                message: "User not found. Unable to delete user",
+                status_code: status.OK,
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { register, login, deleteUser };

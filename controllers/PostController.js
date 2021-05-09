@@ -29,9 +29,6 @@ const create = async (req, res, next) => {
 const all = async (req, res, next) => {
     try {
         const posts = await Post.findAll({
-            where: {
-                user_id: req.user_details.data.id,
-            },
             order: [["post_id", "DESC"]],
         });
 
@@ -59,8 +56,7 @@ const one = async (req, res, next) => {
     try {
         const posts = await Post.findAll({
             where: {
-                post_id: req.params.post_id,
-                user_id: req.user_details.data.id,
+                post_id: req.params.post_id
             },
         });
 

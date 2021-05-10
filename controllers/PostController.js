@@ -52,11 +52,40 @@ const all = async (req, res, next) => {
     }
 };
 
+const userPosts = async (req, res, next) => {
+    try {
+        const posts = await Post.findAll({
+            where: {
+                user_id: req.user_details.data.id,
+            },
+            order: [["post_id", "DESC"]],
+        });
+
+        if (posts.length) {
+            return handleSuccessResponse({
+                res,
+                message: "Posts found",
+                status_code: status.OK,
+                body: { data: posts },
+            });
+        } else {
+            return handleSuccessResponse({
+                res,
+                message: "Posts not found",
+                status_code: status.OK,
+                body: { data: [] },
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
 const one = async (req, res, next) => {
     try {
         const posts = await Post.findAll({
             where: {
-                post_id: req.params.post_id
+                post_id: req.params.post_id,
             },
         });
 
@@ -107,4 +136,4 @@ const deletePost = async (req, res, next) => {
     }
 };
 
-module.exports = { create, all, one, deletePost };
+module.exports = { create, all, one, deletePost, userPosts };

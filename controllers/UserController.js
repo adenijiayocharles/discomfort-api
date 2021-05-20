@@ -29,16 +29,17 @@ const register = async (req, res, next) => {
 
         // create user
         const password = await bcryptjs.hashSync(req.body.password, 10);
-        await User.create({
+        const user = await User.create({
             name: req.body.name,
             email: req.body.email,
             password: password,
         });
-
+        const token = generateToken(user);
         return handleSuccessResponse({
             res,
             message: "Account created successfully",
             status_code: status.CREATED,
+            body: { token: `Bearer ${token}` },
         });
     } catch (error) {
         next(error);

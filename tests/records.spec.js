@@ -17,10 +17,7 @@ beforeAll((done) => {
         });
 });
 
-// testing account registration
 describe("Testing the pain records route", () => {
-    // setup fake account details with the faker library
-
     const data = {
         pain_condition: "condition",
         level: 10,

@@ -12,13 +12,13 @@ describe("Testing the account sign up and log in endpoints", () => {
     };
 
     // signup route test
-    test("Should sigunp for a user", async () => {
+    test("POST /account/register", async () => {
         await supertest(app).post("/account/register").send(data).expect(201);
     });
 
     // login route test
-    test("Should log a user into their acccount", async () => {
-        const response = await supertest(app)
+    test("POST /account/login", async () => {
+        await supertest(app)
             .post("/account/login")
             .send(data)
             .expect(200)

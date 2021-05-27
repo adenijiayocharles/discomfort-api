@@ -43,7 +43,6 @@ const all = async (req, res, next) => {
                 user_id: req.user_details.data.id,
             },
             order: [['sequelize.literal(`DATE(created_at)`)', "DESC"]],
-            raw: true,
         });
         if (records.length) {
             return handleSuccessResponse({

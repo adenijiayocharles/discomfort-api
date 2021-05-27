@@ -42,7 +42,7 @@ const all = async (req, res, next) => {
             where: {
                 user_id: req.user_details.data.id,
             },
-            order: [['record_id', "DESC"]],
+            order: [['sequelize.literal(`DATE(created_at)`)', "DESC"]],
             raw: true,
         });
         if (records.length) {

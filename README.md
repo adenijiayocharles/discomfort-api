@@ -1,1 +1,1 @@
-#### Pain Diary (prototype) Backend API
+#### Discomfort Diary (prototype) Backend API
